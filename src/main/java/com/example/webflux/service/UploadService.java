@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,11 @@ public class UploadService {
 
     return filePartFlux.flatMap(this::getLines);
   }
-
+  public Mono<String> saveFileAndReturnBase64(FilePart filePart){
+      File target = new File("./upload.txt/");
+      Mono<Void> a = filePart.transferTo(target);
+      return Mono.empty();
+  }
   public Flux<String> getLines(FilePart filePart) {
       return filePart.content()
               .map(dataBuffer -> {

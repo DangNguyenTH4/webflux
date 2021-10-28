@@ -22,6 +22,13 @@ public class UploadController {
     @Autowired
     private UploadService uploadService;
 
+
+    // use Flux<FilePart> for multiple file upload
+    @PostMapping(value = "/upload-flux-save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Mono<String> updoadSave(@RequestPart("file") FilePart filePart){
+        return uploadService.saveFileAndReturnBase64(filePart);
+    }
     // use Flux<FilePart> for multiple file upload
     @PostMapping(value = "/upload-flux", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
